@@ -1,0 +1,5 @@
+hello this is a test file
+this is line 2
+this is line 3
+here starts writing to file
+new line added

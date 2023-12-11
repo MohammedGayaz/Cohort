@@ -9,5 +9,18 @@ There is no automated test for this one, this is more for you to understand time
 */
 
 function calculateTime(n) {
-    return 0.01;
+
+    for (let i = 0; i < n; i++) {
+        let j = 0;
+    }
+
+    let endTime = new Date();
+    return endTime;
 }
+
+const startTime = new Date();
+let endTime = calculateTime(100000000)
+const elapsedTime = endTime - startTime;
+console.log(elapsedTime);
+
+
