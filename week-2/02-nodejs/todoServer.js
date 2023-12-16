@@ -39,11 +39,56 @@
 
   Testing the server - run `npm run test-todoServer` command in terminal
  */
-  const express = require('express');
-  const bodyParser = require('body-parser');
+const express = require('express');
+const bodyParser = require('body-parser');
+const fs = require('fs').promises
+const path = require('path')
+const app = express();
+
   
-  const app = express();
-  
-  app.use(bodyParser.json());
-  
-  module.exports = app;
+app.use(bodyParser.json());
+
+
+async function fileData(){
+    const filePath = path.join(__dirname + "/todos.json")
+    try {
+        const stringData = await fs.readFile(filePath, 'utf-8')
+        let arrayData = JSON.parse(stringData)
+        return arrayData
+    }
+    catch(error){
+        throw error
+    }
+}
+
+
+app.get("/todos", async (req, res)=>{
+    try {
+        const data = await fileData();
+        res.status(200).json(data[0])
+    }
+    catch(error){
+        res.status(500).json({error:"Internal Server Problem"})
+    }
+})
+
+
+app.get("/todos/:id", async (req, res) =>{
+    const id = req.params.id;
+    try{
+        const data = await fileData()
+        if(id >= data.length ||  id < 0)
+            throw new Error("Invalid id");
+        else
+            res.status(200).json(data[id])
+    }
+    catch(err){
+        res.status(404).send("Not Found")
+    }
+})
+
+app.listen(3000, ()=>{
+    console.log("3000")
+} )
+
+// module.exports = app;
