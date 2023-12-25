@@ -25,10 +25,16 @@ module.exports = app;
 app.get("/files", async (req, res)=>{
     try{
         const files = await fs.readdir(path.join(__dirname + "/files"))
-        res.status(200).json(files)
+        if(files.length === 0 ){
+            res.status(500).send()
+        }
+        else{
+            res.status(200).json(files)
+        }
     }
     catch (error){
         console.error("Error reading files:", error);
+        console.log(error)
         res.status(500).json({ error: 'Failed to retrieve files' });
     }
 });
@@ -52,6 +58,6 @@ app.use((req, res)=>{
     res.status(404).send("Route not found")
 })
 
-app.listen(3000,()=>{
-    console.log("listeing at port 3000")
-})
+// app.listen(3000,()=>{
+// console.log("listeing at port 3000")
+// })
